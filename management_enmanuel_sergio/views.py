@@ -18,7 +18,7 @@ class ReservaListView(LoginRequiredMixin, ListView):
     template_name = 'management/reserva_list.html'
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = Reserva.objects.filter(usuario=self.request.user)
         
         fecha = self.request.GET.get('fecha')
         laboratorio = self.request.GET.get('laboratorio')

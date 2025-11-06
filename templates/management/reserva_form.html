@@ -12,7 +12,13 @@
                 <div>
                     <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
                     <div class="mt-1">
-                        {{ field }}
+                        {% if field.name == 'fecha' %}
+                            <input type="date" name="{{ field.name }}" id="{{ field.id_for_label }}" value="{{ field.value|date:'Y-m-d' }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        {% elif field.name == 'hora_inicio' or field.name == 'hora_fin' %}
+                            <input type="time" name="{{ field.name }}" id="{{ field.id_for_label }}" value="{{ field.value|date:'H:i' }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
                         {% if field.help_text %}
                             <p class="mt-2 text-sm text-gray-500">{{ field.help_text }}</p>
                         {% endif %}
