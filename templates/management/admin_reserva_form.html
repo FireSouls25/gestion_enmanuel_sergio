@@ -17,7 +17,7 @@
                     <div>
                         <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
                         <div class="mt-1">
-                            {{ field }}
+                            {{ field.as_widget }}
                             {{ field.errors }}
                             {% if field.help_text %}
                                 <p class="helptext">{{ field.help_text }}</p>

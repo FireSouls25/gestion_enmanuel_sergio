@@ -14,17 +14,18 @@
             {% csrf_token %}
             {% for field in form %}
                 <div>
-                    <label for="{{ field.id_for_label }}" class="sr-only">{{ field.label }}</label>
-                    {{ field.errors }}
-                    {% if field.name == 'role' %}
-                        <select name="{{ field.name }}" id="{{ field.id_for_label }}" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                            {% for value, label in field.field.choices %}
-                                <option value="{{ value }}" {% if field.value == value %}selected{% endif %}>{{ label }}</option>
-                            {% endfor %}
-                        </select>
-                    {% else %}
-                        {{ field }}
-                    {% endif %}
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
+                    <div class="mt-1 border-2 border-indigo-300 rounded mb-2">
+                        {{ field.errors }}
+                        {% if field.name == 'role' %}
+                            <select name="{{ field.name }}" id="{{ field.id_for_label }}" class="block w-full">
+                                {% for value, label in field.field.choices %}
+                                    <option value="{{ value }}" {% if field.value == value %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
                     {% if field.help_text %}
                         <p class="helptext">{{ field.help_text }}</p>
                     {% endif %}

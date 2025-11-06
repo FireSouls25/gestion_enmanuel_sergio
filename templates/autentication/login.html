@@ -14,9 +14,9 @@
             {% csrf_token %}
             {% for field in form %}
                 <div>
-                    <label for="{{ field.id_for_label }}" class="sr-only">{{ field.label }}</label>
-                    {{ field.errors }}
-                    {{ field }}
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
+                    <div class="mt-1 border-2 border-indigo-300 rounded mb-5">
+                        {{ field }}
                     {% if field.help_text %}
                         <p class="helptext">{{ field.help_text }}</p>
                     {% endif %}

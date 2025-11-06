@@ -15,13 +15,13 @@
             {% for field in form %}
                 <div>
                     <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
-                    <div class="mt-1">
+                    <div class="mt-1 border-2 border-indigo-300 rounded">
                         {% if field.name == 'fecha' %}
                             <input type="date" name="{{ field.name }}" id="{{ field.id_for_label }}" value="{{ field.value|date:'Y-m-d' }}" class="block w-full">
                         {% elif field.name == 'hora_inicio' or field.name == 'hora_fin' %}
                             <input type="time" name="{{ field.name }}" id="{{ field.id_for_label }}" value="{{ field.value|date:'H:i' }}" class="block w-full">
                         {% else %}
-                            {{ field }}
+                            {{ field.as_widget }}
                         {% endif %}
                         {{ field.errors }}
                         {% if field.help_text %}

@@ -14,15 +14,15 @@
     <form method="get" class="bg-white shadow-lg rounded-xl p-6 mb-6 flex flex-wrap items-end space-x-4">
         <div class="flex-grow">
             <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha:</label>
-            <input type="date" name="fecha" id="fecha" value="{{ request.GET.fecha }}" class="mt-1 block w-full">
+            <input type="date" name="fecha" id="fecha" value="{{ request.GET.fecha }}" class="mt-1 block w-full border-2 border-indigo-200 rounded">
         </div>
         <div class="flex-grow">
             <label for="laboratorio" class="block text-sm font-medium text-gray-700">Laboratorio:</label>
-            <input type="text" name="laboratorio" id="laboratorio" value="{{ request.GET.laboratorio }}" class="mt-1 block w-full">
+            <input type="text" name="laboratorio" id="laboratorio" value="{{ request.GET.laboratorio }}" class="mt-1 block w-full border-2 border-indigo-200 rounded">
         </div>
         <div class="flex-grow">
             <label for="usuario" class="block text-sm font-medium text-gray-700">Usuario:</label>
-            <input type="text" name="usuario" id="usuario" value="{{ request.GET.usuario }}" class="mt-1 block w-full">
+            <input type="text" name="usuario" id="usuario" value="{{ request.GET.usuario }}" class="mt-1 block w-full border-2 border-indigo-200 rounded">
         </div>
         <div class="flex-grow">
             <label for="estado" class="block text-sm font-medium text-gray-700">Estado:</label>
