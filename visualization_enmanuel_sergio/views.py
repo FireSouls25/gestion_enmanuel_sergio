@@ -10,8 +10,23 @@ class ReservaStatisticsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['reservas_por_laboratorio'] = Reserva.objects.values('laboratorio').annotate(count=Count('id'))
-        context['reservas_por_estado'] = Reserva.objects.values('estado').annotate(count=Count('id'))
+        
+        queryset = Reserva.objects.all()
+
+        fecha = self.request.GET.get('fecha')
+        laboratorio = self.request.GET.get('laboratorio')
+
+        if fecha:
+            queryset = queryset.filter(fecha=fecha)
+        if laboratorio:
+            queryset = queryset.filter(laboratorio__icontains=laboratorio)
+
+        reservas_por_laboratorio_queryset = queryset.values('laboratorio').annotate(count=Count('id'))
+        context['reservas_por_laboratorio'] = {item['laboratorio']: item['count'] for item in reservas_por_laboratorio_queryset}
+
+        reservas_por_estado_queryset = queryset.values('estado').annotate(count=Count('id'))
+        context['reservas_por_estado'] = {item['estado']: item['count'] for item in reservas_por_estado_queryset}
+        context['all_reservas'] = queryset
         return context
 
 def export_csv(request):
