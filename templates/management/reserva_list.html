@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Reservas{% endblock %}
+
+{% block content %}
+<div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold">Mis Reservas</h2>
+    <a href="{% url 'management:reserva_create' %}" class="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600">Crear Reserva</a>
+</div>
+
+<div class="bg-white p-8 rounded-lg shadow-md">
+    <table class="w-full">
+        <thead>
+            <tr>
+                <th class="text-left">Laboratorio</th>
+                <th class="text-left">Fecha</th>
+                <th class="text-left">Hora Inicio</th>
+                <th class="text-left">Hora Fin</th>
+                <th class="text-left">Estado</th>
+                <th class="text-left">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reserva in object_list %}
+                <tr>
+                    <td>{{ reserva.laboratorio }}</td>
+                    <td>{{ reserva.fecha }}</td>
+                    <td>{{ reserva.hora_inicio }}</td>
+                    <td>{{ reserva.hora_fin }}</td>
+                    <td>{{ reserva.get_estado_display }}</td>
+                    <td>
+                        {% if reserva.estado == 'pendiente' %}
+                            <a href="{% url 'management:reserva_update' reserva.pk %}" class="text-blue-500 hover:underline">Editar</a>
+                            <a href="{% url 'management:reserva_delete' reserva.pk %}" class="text-red-500 hover:underline ml-4">Eliminar</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

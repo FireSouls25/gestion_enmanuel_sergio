@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Estadísticas de Reservas{% endblock %}
+
+{% block content %}
+<div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold">Estadísticas de Uso</h2>
+    <a href="{% url 'visualization:export_csv' %}" class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600">Exportar a CSV</a>
+</div>
+
+<div class="bg-white p-8 rounded-lg shadow-md">
+    <h3 class="text-xl font-bold mb-4">Reservas por Laboratorio</h3>
+    <ul>
+        {% for lab, count in reservas_por_laboratorio.items %}
+            <li>{{ lab }}: {{ count }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3 class="text-xl font-bold mt-8 mb-4">Reservas por Estado</h3>
+    <ul>
+        {% for estado, count in reservas_por_estado.items %}
+            <li>{{ estado }}: {{ count }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
