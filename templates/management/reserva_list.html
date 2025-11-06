@@ -3,40 +3,54 @@
 {% block title %}Lista de Reservas{% endblock %}
 
 {% block content %}
-<div class="flex justify-between items-center mb-6">
-    <h2 class="text-2xl font-bold">Mis Reservas</h2>
-    <a href="{% url 'management:reserva_create' %}" class="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600">Crear Reserva</a>
-</div>
+<div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-3xl font-extrabold text-gray-900">Mis Reservas</h2>
+        <a href="{% url 'management:reserva_create' %}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Crear Reserva
+        </a>
+    </div>
 
-<div class="bg-white p-8 rounded-lg shadow-md">
-    <table class="w-full">
-        <thead>
-            <tr>
-                <th class="text-left">Laboratorio</th>
-                <th class="text-left">Fecha</th>
-                <th class="text-left">Hora Inicio</th>
-                <th class="text-left">Hora Fin</th>
-                <th class="text-left">Estado</th>
-                <th class="text-left">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for reserva in object_list %}
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
                 <tr>
-                    <td>{{ reserva.laboratorio }}</td>
-                    <td>{{ reserva.fecha }}</td>
-                    <td>{{ reserva.hora_inicio }}</td>
-                    <td>{{ reserva.hora_fin }}</td>
-                    <td>{{ reserva.get_estado_display }}</td>
-                    <td>
-                        {% if reserva.estado == 'pendiente' %}
-                            <a href="{% url 'management:reserva_update' reserva.pk %}" class="text-blue-500 hover:underline">Editar</a>
-                            <a href="{% url 'management:reserva_delete' reserva.pk %}" class="text-red-500 hover:underline ml-4">Eliminar</a>
-                        {% endif %}
-                    </td>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Laboratorio</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hora Inicio</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hora Fin</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {% for reserva in object_list %}
+                    <tr class="{% cycle 'bg-white' 'bg-gray-50' %}">
+                        <td class="px-6 py-4 whitespace-nowrap">{{ reserva.laboratorio }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ reserva.fecha }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ reserva.hora_inicio }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ reserva.hora_fin }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {% if reserva.estado == 'aprobada' %}bg-green-100 text-green-800{% elif reserva.estado == 'rechazada' %}bg-red-100 text-red-800{% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                                {{ reserva.get_estado_display }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            {% if reserva.estado == 'pendiente' %}
+                                <a href="{% url 'management:reserva_update' reserva.pk %}" class="text-indigo-600 hover:text-indigo-900">Editar</a>
+                                <a href="{% url 'management:reserva_delete' reserva.pk %}" class="text-red-600 hover:text-red-900 ml-4">Eliminar</a>
+                            {% else %}
+                                <span class="text-gray-400">No acciones</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">No hay reservas disponibles.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

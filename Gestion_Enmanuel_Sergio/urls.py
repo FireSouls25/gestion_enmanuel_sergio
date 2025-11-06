@@ -6,6 +6,6 @@ urlpatterns = [
     path('', RedirectView.as_view(pattern_name='autentication_enmanuel_sergio:home'), name='home'),
     path('admin/', admin.site.urls),
     path('auth/', include('autentication_enmanuel_sergio.urls')),
-    path('management/', include('management_enmanuel_sergio.urls')),
+    path('management/', include('management_enmanuel_sergio.urls', namespace='management')),
     path('visualization/', include('visualization_enmanuel_sergio.urls', namespace='visualization')),
 ]
