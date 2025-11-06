@@ -38,6 +38,19 @@ class ReservaCreateView(LoginRequiredMixin, DocenteRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.usuario = self.request.user
+        
+        # Check for overlapping reservations
+        conflicting_reservations = Reserva.objects.filter(
+            laboratorio=form.instance.laboratorio,
+            fecha=form.instance.fecha,
+            hora_inicio__lt=form.instance.hora_fin,
+            hora_fin__gt=form.instance.hora_inicio,
+        )
+        
+        if conflicting_reservations.exists():
+            form.add_error(None, "Ya existe una reserva para este laboratorio en el horario seleccionado.")
+            return self.form_invalid(form)
+
         return super().form_valid(form)
 
 class ReservaUpdateView(LoginRequiredMixin, DocenteRequiredMixin, UpdateView):
@@ -46,9 +59,20 @@ class ReservaUpdateView(LoginRequiredMixin, DocenteRequiredMixin, UpdateView):
     fields = ['laboratorio', 'fecha', 'hora_inicio', 'hora_fin', 'motivo']
     success_url = reverse_lazy('management:reserva_list')
 
-    def test_func(self):
-        reserva = self.get_object()
-        return super().test_func() and self.request.user == reserva.usuario and reserva.estado == 'pendiente'
+    def form_valid(self, form):
+        # Check for overlapping reservations, excluding the current one
+        conflicting_reservations = Reserva.objects.filter(
+            laboratorio=form.instance.laboratorio,
+            fecha=form.instance.fecha,
+            hora_inicio__lt=form.instance.hora_fin,
+            hora_fin__gt=form.instance.hora_inicio,
+        ).exclude(pk=self.object.pk)
+
+        if conflicting_reservations.exists():
+            form.add_error(None, "Ya existe una reserva para este laboratorio en el horario seleccionado.")
+            return self.form_invalid(form)
+
+        return super().form_valid(form)
 
 class ReservaDeleteView(LoginRequiredMixin, DocenteRequiredMixin, DeleteView):
     model = Reserva
